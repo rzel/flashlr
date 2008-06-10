@@ -119,17 +119,21 @@ package com.googlecode.flashlr.parser.batch
 			
 
 			if ( e is Sequence )
+			{
 				node = parseSequence( e as Sequence, index );
-				
-			if ( e is TerminalMatcher )
+			}
+			else if ( e is TerminalMatcher )
+			{
 				node = parseTerminalMatcher( e as TerminalMatcher, index );
-			
-			if ( e is OR )
+			}
+			else if ( e is OR )
+			{
 				node = parseOR( e as OR, index );
-
-			if ( e is Quantifier )
+			}
+			else if ( e is Quantifier )
+			{
 				node = parseQuantifier( e as Quantifier, index );
-
+			}
 			
 			
 			// attach the production if one is available
@@ -305,16 +309,11 @@ package com.googlecode.flashlr.parser.batch
 				var newChildNode:Node = parseExpression( e.operand, currentIndex );
 				
 				
-				if ( newChildNode == null )				// this match failed
+				if ( newChildNode == null )			// this match failed
 				{
-					if ( i >= e.min )					// over min
-					{
-						return node;						// OK, return what we have so far
-					}
-					else								// under min
-					{
-						return null						// we failed					
-					}
+														// we fail upstream if we are under min, otherwise we pass				
+					return ( i >= e.min ) ? node : null; 
+
 				}
 				else								// this match is OK, keep on looping
 				{
@@ -350,6 +349,7 @@ package com.googlecode.flashlr.parser.batch
 				return "Syntax Error: empty query";
 
 			return "Syntax Error. Expected "  + failedProduction + " but found " + failedToken.image;
+		
 		
 		}
 
