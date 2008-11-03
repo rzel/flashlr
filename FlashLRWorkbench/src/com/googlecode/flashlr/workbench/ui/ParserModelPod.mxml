@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AbstractLRWorkbenchPod
+
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:ui="com.googlecode.flashlr.workbench.ui.*"
+	
+	creationComplete="init( )"
+	
+	label="Parser Model"
+	
+	>
+	
+	<mx:Script>
+		<![CDATA[
+		
+			import mx.binding.utils.BindingUtils;
+			import com.googlecode.flashlr.parser.model.ParserModel;
+
+
+			
+			private function init( ):void
+			{
+				BindingUtils.bindSetter( update, manager, "parserModel" );
+			}
+
+
+			private function update( parserModel:ParserModel ):void
+			{
+				
+				if ( !enabledCheckbox.selected )
+					return;
+				
+				
+				if ( parserModel == null )
+					dump = "";
+				else
+					dump = parserModel.dump( );			
+			}
+
+			
+			
+			[Bindable]
+			public var dump:String = "";
+			
+		
+
+			private function enabledCheckbox_change( ):void
+			{
+				if ( enabledCheckbox.selected )
+					update( manager.parserModel );
+				else
+					dump = "";
+			}			
+
+			
+
+			
+		]]>
+	</mx:Script>
+
+	<mx:CheckBox id="enabledCheckbox" 
+		label="Enabled" 
+		change="enabledCheckbox_change()"
+		/>
+	
+	<mx:TextArea id="ta" 
+		width="100%" height="100%"
+		text="{dump}"
+		/>
+	
+	
+</ui:AbstractLRWorkbenchPod>
