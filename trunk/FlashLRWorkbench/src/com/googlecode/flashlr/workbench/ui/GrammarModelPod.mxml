@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AbstractLRWorkbenchPod
+
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:ui="com.googlecode.flashlr.workbench.ui.*"
+	
+	creationComplete="init( )"
+	
+	label="Grammar Model"
+	
+	>
+	
+	<mx:Script>
+		<![CDATA[
+
+			import com.googlecode.flashlr.grammar.Grammar;
+
+			import mx.collections.IList;
+			import mx.collections.ArrayCollection;
+			import mx.binding.utils.BindingUtils;
+			
+
+			
+			private function init( ):void
+			{
+				BindingUtils.bindSetter( update, manager, "grammar" );
+			}
+
+
+			private function update( grammar:Grammar ):void
+			{
+				
+				if ( !enabledCheckbox.selected )
+					return;				
+				
+				if ( grammar == null )
+				{
+					productions = new ArrayCollection( );
+					return;
+				}
+					
+				var p:Array = grammar.getNonTerminals( ).concat(  grammar.getTerminals( )  );				
+
+				productions = new ArrayCollection( p );					
+					
+			}
+
+			
+
+
+
+			////////////////////////////////
+			// productions
+			////////////////////////////////
+			[Bindable]
+			public var productions:IList;
+			
+
+
+
+			private function enabledCheckbox_change( ):void
+			{
+				update( enabledCheckbox.selected ? manager.grammar : null );
+			}			
+			
+			
+			
+
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:CheckBox id="enabledCheckbox" 
+		label="Enabled" 
+		change="enabledCheckbox_change()"
+		/>		
+	
+
+	<mx:DataGrid id="dg" 
+		dataProvider="{productions}" 
+		width="100%" height="100%"
+		
+		/>
+	
+	
+	
+</ui:AbstractLRWorkbenchPod>

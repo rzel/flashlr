@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AbstractLRWorkbenchPod
+
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:ui="com.googlecode.flashlr.workbench.ui.*"
+	
+	creationComplete="onCreationComplete( )"
+	
+	label="Grammar Source"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			
+			private function onCreationComplete( ):void
+			{
+			
+			}
+			
+			
+			private function parse( ):void
+			{
+			
+				
+			
+			
+			}
+			
+			
+		]]>
+	</mx:Script>
+
+
+	<mx:TextArea width="100%" height="100%"/>
+
+	
+	<mx:Button label="Parse and Create Grammar Model" click="parse( )"/>
+	
+	
+</ui:AbstractLRWorkbenchPod>

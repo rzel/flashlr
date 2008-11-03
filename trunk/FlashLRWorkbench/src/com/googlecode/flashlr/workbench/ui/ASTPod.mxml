@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:AbstractLRWorkbenchPod
+
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:ui="com.googlecode.flashlr.workbench.ui.*"
+	
+	creationComplete="init()"
+	
+	label="AST"
+	
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import flexlib.scheduling.scheduleClasses.utils.Selection;
+		
+
+			import com.googlecode.flashlr.parser.batch.E4XTranscoder;
+			import com.googlecode.flashlr.parser.batch.Node;
+
+			import mx.binding.utils.BindingUtils;
+			
+
+			[Bindable]
+			public var txt:String = "";
+
+			
+
+			private function init( ):void
+			{
+				
+				BindingUtils.bindSetter( update, manager, "ast" );
+			
+			}
+
+			
+			
+			private function update( rootNode:Node ):void
+			{
+				
+				if ( !enabledCheckbox.selected )
+					rootNode = null;
+				
+				if ( tree.dataProvider != rootNode )
+				{
+					tree.dataProvider = rootNode;
+					
+					if ( rootNode == null )
+						ta.text = "";
+					else
+						txt = E4XTranscoder.toXML( rootNode );			
+				}
+
+			}
+			
+			
+			
+			private function enabledCheckbox_change( ):void
+			{
+				update( enabledCheckbox.selected ? manager.ast : null );
+			}			
+			
+
+			private function toggleExpand( ):void
+			{
+				
+				tree.expandChildrenOf( tree.dataProvider, true );						
+				
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+
+	<mx:CheckBox id="enabledCheckbox" 
+		label="Enabled" 
+		change="enabledCheckbox_change()"
+		/>	
+
+	<mx:TabNavigator height="100%" width="100%" creationPolicy="all">
+	
+		<mx:VBox label="Tree" height="100%" width="100%">
+			<mx:Button label="expand" click="toggleExpand( )"/>
+			<mx:Tree id="tree" width="100%" height="100%" />
+		</mx:VBox>
+	
+	
+		<mx:VBox label="XML" height="100%" width="100%">
+			<mx:TextArea id="ta" text="{txt}" height="100%" width="100%" />
+		</mx:VBox>
+	
+	</mx:TabNavigator>
+	
+
+
+	
+</ui:AbstractLRWorkbenchPod>
